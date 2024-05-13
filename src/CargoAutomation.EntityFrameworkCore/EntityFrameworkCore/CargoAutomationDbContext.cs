@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -51,6 +54,11 @@ public class CargoAutomationDbContext :
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
+    public DbSet<Unit> Units { get; set; }
+    public DbSet<Agenta> Agentas { get; set; }
+    public DbSet<TransferCenter> TransferCenters { get; set; }
+    public DbSet<Station> Stations { get; set; }
+    public DbSet<Line> Lines { get; set; }
     #endregion
 
     public CargoAutomationDbContext(DbContextOptions<CargoAutomationDbContext> options)
@@ -58,7 +66,14 @@ public class CargoAutomationDbContext :
     {
 
     }
+    public void Configure(EntityTypeBuilder<Line> builder)
+    {
+        // LineType alanını int olarak belirtme
+        builder.Property(l => l.LineType)
+               .HasConversion<int>(); // Enum'i int'e dönüştür
 
+        // Diğer konfigürasyonlar buraya eklenebilir
+    }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -82,5 +97,68 @@ public class CargoAutomationDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+        builder.Entity<Unit>(b =>
+        {
+            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Units", CargoAutomationConsts.DbSchema);
+            b.ConfigureByConvention();
+
+     
+        });
+
+        // Agentas
+        builder.Entity<Agenta>(b =>
+        {
+            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Agentas", CargoAutomationConsts.DbSchema);
+            b.ConfigureByConvention();
+
+          
+        });
+
+        // TransferCenters
+        builder.Entity<TransferCenter>(b =>
+        {
+            b.ToTable(CargoAutomationConsts.DbTablePrefix + "TransferCenters", CargoAutomationConsts.DbSchema);
+            b.ConfigureByConvention();
+
+
+            // TransferCenter'dan Agenta'ya one-to-many ilişkisi belirle
+            b.HasMany(tc => tc.Agentas)
+                .WithOne(a => a.TransferCenter)
+                .HasForeignKey(a => a.TransferCenterId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Stations
+        builder.Entity<Station>(b =>
+        {
+            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Stations", CargoAutomationConsts.DbSchema);
+            b.ConfigureByConvention();
+
+           
+
+            // Station'dan Line'a many-to-one ilişkisi belirle
+            b.HasOne(s => s.Line)
+                .WithMany(l => l.Stations)
+                .HasForeignKey(s => s.LineId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Lines
+        builder.Entity<Line>(b =>
+        {
+            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Lines", CargoAutomationConsts.DbSchema);
+            b.ConfigureByConvention();
+
+
+            // Line'dan Station'a one-to-many ilişkisi belirle
+            b.HasMany(l => l.Stations)
+                .WithOne(s => s.Line)
+                .HasForeignKey(s => s.LineId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
