@@ -3,6 +3,57 @@
   "texts": {
     "Menu:Home": "Ana sayfa",
     "Welcome": "Hoşgeldiniz",
-    "LongWelcomeMessage": "Uygulamaya hoşgeldiniz. Bu, ABP framework'ü üzerine bina edilmiş bir başlangıç projesidir. Daha fazla bilgi için abp.io adresini ziyaret edebilirsiniz."
+    "LongWelcomeMessage": "Uygulamaya hoşgeldiniz. Bu, ABP framework'ü üzerine bina edilmiş bir başlangıç projesidir. Daha fazla bilgi için abp.io adresini ziyaret edebilirsiniz.",
+
+
+    "Messages:AddedAgenta": "Acenta Kaydı Başarıyla Tamamlandı",
+    "Messages:AgentaAlreadyExists": "Bu Acenta Daha Önce Kaydedilmiş",
+    "Messages:UpdatedAgenta": "Acenta Başarıyla Güncellendi",
+    "Messages:AgentaNotFound": "Acenta Bulunamadı",
+    "Messages:DeletedAgenta": "Acenta Kaydı Başarıyla Silindi",
+    "Messages:SoftDeleteAgenta": "Acenta Veri Tabanında Yumuşak Silindi",
+
+    "Messages:AddedTransferCenterDal": "Transfer Merkezi kaydı Başarıyla Tamamlandı",
+    "Messages:UpdatedTransferCenter": "Transfer Merkezi Başarıyla Güncellendi",
+    "Messages:TransferCenterAlreadyExists": "Bu Transfer Center Daha Önce Kaydedilmiş",
+    "Messages:AgentaNotFoundForTransferCenter": "Belirtilen TransferCenter'a ait Agenta bulunamadı.",
+    "Messages:TransferCenterNotFound": "TransferCenter bulunamadı",
+    "Messages:DeletedTransferCenter": "Transfer Merkezi Başarıyla Silindi",
+    "Messages:SoftDeleteTransferCenter": "Transfer Merkezi Veri Tabanında Yumuşak Silindi",
+
+    "Messages:AuthorizationDenied": "Yetkiniz yok",
+    "Messages:UserAlREadyExist": "Bu Kullanıcı Zaten var",
+    "Messages:UserNotFound": "Kullanıcı bulunamadı",
+    "Messages:PasswordError": "Şifre hatalı",
+    "Messages:SuccessfulLogin": "Sisteme giriş başarılı",
+    "Messages:UserAlreadyExists": "Bu kullanıcı zaten mevcut",
+    "Messages:UserRegistered": "Kullanıcı başarıyla kaydedildi",
+    "Messages:AccessTokenCreated": "Access token başarıyla oluşturuldu",
+
+    //"Messages:UserMailConfirmSuccessful": "Mailiniz Başarıyla Onaylandı",
+    //"Messages:MailConfirmSendSuccessful": "Onay Maili Tekrar Göderildi",
+    //"Messages:MailAlreadConfirm": "Mail Zaten Onaylı. Tekrar Gönderim Yapılmadı.",
+    //"Messages:MailConfirmTimeHasNotExpire": "Mail Onayını 5 dk Bir Görebilirsiniz",
+
+    //"Messages:MailSendSucessful": "Mail Gönderme Başarılı",
+    //"Messages:MailParameterAdded": "Mail Parametreleri Başarıyla Güncellendi",
+    //"Messages:MailTemplateAdded": "Mail Şablonu Başarıyla Eklendi",
+    //"Messages:MailTemplateDeleted": "Mail Şablonu Başarıyla Silindi",
+    //"Messages:MailTemplateUpdated": "Mail Şablonu Başarıyla Güncellendi",
+
+    //"Messages:UpdatedOperationClaim": "Yetki Başarıyla Güncellendi",
+    //"Messages:DeletedOperationClaim": "Yetki Başarıyla Silindi",
+    //"Messages:AddedOperationClaim": "Yetki Başarıyla Eklendi",
+
+    //"Messages:AddedUserOperationClaim": "Kullanıcıya yetki başarıyla eklendi",
+    //"Messages:UpdatedUserOperationClaim": "Kullanıcıya yetki başarıyla güncellendi",
+    //"Messages:DeletedUserOperationClaim": "Kullanıcıya yetki başarıyla silindi",
+
+    "Messages:AddedStation": "Durak Başarıyla Eklendi",
+    "Messages:StationNotFount": "Belirtilen ID'ye sahip istasyon bulunamadı.",
+    "Messages:UpdatedStation": "Durak Başarıyla Güncellendi",
+    "Messages:DeletedStation": "Durak Başarıyla Silindi",
+
+    "Messages:AddLine": "Hat Başarıyla Eklendi"
   }
 }
