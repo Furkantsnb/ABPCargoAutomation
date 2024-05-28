@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Volo.Abp.Domain.Entities.Auditing;
+﻿using CargoAutomation.Agentas;
 
-namespace MyProject.Entities
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CargoAutomation.TransferCenters
 {
-    public class TransferCenter : AuditedAggregateRoot<Guid>
+    public class TransferCenter
     {
         public IList<Agenta> Agentas { get; set; }
     }

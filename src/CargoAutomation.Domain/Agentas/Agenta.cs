@@ -1,8 +1,12 @@
 ﻿
+
+
+using CargoAutomation.TransferCenters;
+using CargoAutomation.Units;
 using System;
 using Volo.Abp.Domain.Entities;
 
-namespace MyProject.Entities
+namespace CargoAutomation.Agentas
 {
     public class Agenta : Unit
     {

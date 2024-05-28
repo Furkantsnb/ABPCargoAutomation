@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CargoAutomation.Lines;
+using CargoAutomation.Units;
+using System;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace MyProject.Entities
+namespace CargoAutomation.Stations
 {
     public class Station : AuditedAggregateRoot<Guid>
     {

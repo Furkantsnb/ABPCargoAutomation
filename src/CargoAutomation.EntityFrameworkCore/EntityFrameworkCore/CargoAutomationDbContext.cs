@@ -1,6 +1,12 @@
-﻿using Entities.Concrete;
+﻿
+using CargoAutomation.Agentas;
+using CargoAutomation.Lines;
+using CargoAutomation.Stations;
+using CargoAutomation.TransferCenters;
+using CargoAutomation.Units;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
