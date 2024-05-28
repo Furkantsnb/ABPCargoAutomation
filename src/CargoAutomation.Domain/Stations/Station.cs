@@ -1,14 +1,10 @@
-﻿
+﻿using Entities.Concrete;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Domain.Entities;
 
-namespace Entities.Concrete
+namespace MyProject.Entities
 {
-    public class Station: AuditedAggregateRoot<Guid>
+    public class Station : Entity<int>
     {
         public string StationName { get; set; }
         public bool IsActive { get; set; }
@@ -17,8 +13,5 @@ namespace Entities.Concrete
         public Unit Unit { get; set; }
         public int LineId { get; set; }
         public Line Line { get; set; }
-        
-
-
     }
 }

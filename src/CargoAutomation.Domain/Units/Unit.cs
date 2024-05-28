@@ -1,19 +1,11 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Domain.Entities.Auditing;
-using static System.Collections.Specialized.BitVector32;
+using Volo.Abp.Domain.Entities;
 
-namespace Entities.Concrete
+namespace MyProject.Entities
 {
-    public class Unit : AuditedAggregateRoot<Guid>
+    public class Unit : Entity<int>
     {
-      
         public string UnitName { get; set; }
         public string ManagerName { get; set; }
         public string ManagerSurname { get; set; }
@@ -28,7 +20,6 @@ namespace Entities.Concrete
         public string AddressDetail { get; set; }
         public bool IsDeleted { get; set; }
         [ConcurrencyCheck]
-        public virtual string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
-
+        public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
     }
 }
