@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace MyProject.Entities
 {
-    public class Unit : Entity<int>
+    public class Unit : AuditedAggregateRoot<Guid>
     {
         public string UnitName { get; set; }
         public string ManagerName { get; set; }

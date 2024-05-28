@@ -1,10 +1,10 @@
-﻿using Entities.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace MyProject.Entities
 {
-    public class TransferCenter : Unit
+    public class TransferCenter : AuditedAggregateRoot<Guid>
     {
         public IList<Agenta> Agentas { get; set; }
     }
