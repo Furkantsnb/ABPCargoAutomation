@@ -13,8 +13,8 @@ namespace Entities.Dtos.Stations
  
         public string StationName { get; set; }
         public int OrderNumber { get; set; }
-        public int UnitId { get; set; }
-        public int LineId { get; set; }
+        public Guid UnitId { get; set; }
+        public Guid LineId { get; set; }
         public bool IsActive { get; set; }
     }
 }

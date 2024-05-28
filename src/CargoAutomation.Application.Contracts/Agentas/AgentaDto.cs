@@ -5,9 +5,9 @@ using Volo.Abp.Application.Dtos;
 
 namespace Entities.Dtos.Agentas
 {
-    public class CreateAgentaDto 
+    public class AgentaDto : AuditedEntityDto<Guid>
     {
-        
+
         public string UnitName { get; set; }
         public string ManagerName { get; set; }
         public string ManagerSurname { get; set; }

@@ -16,7 +16,7 @@ namespace Entities.Dtos.Lines
         public string LineName { get; set; }
         public bool IsActive { get; set; } = true;
         public LineType LineType { get; set; }
-        public int? TransferCenterId { get; set; }
+        public Guid TransferCenterId { get; set; }
         public List<StationDto> Stations { get; set; }
     }
 }

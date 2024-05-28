@@ -1,13 +1,14 @@
-﻿
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 using Volo.Abp.Application.Dtos;
 
-namespace Entities.Dtos.Agentas
+namespace CargoAutomation.TransferCenter
 {
-    public class CreateAgentaDto 
+    public class TransferCenterDto: AuditedEntityDto<Guid>
     {
-        
+      
         public string UnitName { get; set; }
         public string ManagerName { get; set; }
         public string ManagerSurname { get; set; }
@@ -21,6 +22,8 @@ namespace Entities.Dtos.Agentas
         public string Street { get; set; }
         public string AddressDetail { get; set; }
         public bool IsDeleted { get; set; }
-        public Guid TransferCenterId { get; set; }
+        [ConcurrencyCheck]
+        public virtual string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+        
     }
 }
