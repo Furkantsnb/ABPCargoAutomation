@@ -1,6 +1,7 @@
 ﻿using CargoAutomation.Lines;
 using CargoAutomation.Units;
 using System;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace CargoAutomation.Stations
@@ -14,5 +15,6 @@ namespace CargoAutomation.Stations
         public Unit Unit { get; set; }
         public Guid LineId { get; set; }
         public Line Line { get; set; }
+      
     }
 }

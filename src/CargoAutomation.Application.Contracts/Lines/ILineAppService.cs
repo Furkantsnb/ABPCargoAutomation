@@ -9,11 +9,11 @@ namespace CargoAutomation.Lines
 {
     public interface ILineAppService : IApplicationService
     {
-        Task<ListResultDto<LineDto>> GetListAsync();
-        Task<LineDto> GetAsync(int id);
+        Task<PagedResultDto<LineDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+        Task<LineDto> GetAsync(Guid id);
         Task<LineDto> CreateAsync(CreateLineDto input);
-        Task UpdateAsync(int id, UpdateLineDto input);
-        Task DeleteAsync(int id);
-        Task SoftDeleteAsync(int id);
+        Task<LineDto> UpdateAsync(Guid id, UpdateLineDto input);
+        Task DeleteAsync(Guid id);
+        Task SoftDeleteAsync(Guid id);
     }
 }
