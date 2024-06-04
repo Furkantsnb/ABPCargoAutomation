@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CargoAutomation.Application.Contracts\CargoAutomation.Application.Contracts.csproj" />
     <ProjectReference Include="..\CargoAutomation.Domain.Shared\CargoAutomation.Domain.Shared.csproj" />
   </ItemGroup>
 

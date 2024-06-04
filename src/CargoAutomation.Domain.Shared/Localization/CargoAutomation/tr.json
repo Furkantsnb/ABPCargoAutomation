@@ -5,7 +5,36 @@
     "Welcome": "Hoşgeldiniz",
     "LongWelcomeMessage": "Uygulamaya hoşgeldiniz. Bu, ABP framework'ü üzerine bina edilmiş bir başlangıç projesidir. Daha fazla bilgi için abp.io adresini ziyaret edebilirsiniz.",
 
+    "Messages:AddedAgenta": "Acenta Kaydı Başarıyla Tamamlandı",
+    "Messages:AgentaAlreadyExists": "Bu Acenta Daha Önce Kaydedilmiş",
+    "Messages:UpdatedAgenta": "Acenta Başarıyla Güncellendi",
+    "AgentaNotFound": "Acenta Bulunamadı",
+    "Messages:DeletedAgenta": "Acenta Kaydı Başarıyla Silindi",
+    "Messages:SoftDeleteAgenta": "Acenta Veri Tabanında Yumuşak Silindi",
 
-   
+    "Messages:AddedTransferCenterDl": "Transfer Merkezi kaydı Başarıyla Tamamlandı",
+    "Messages:UpdatedTransferCenter": "Transfer Merkezi Başarıyla Güncellendi",
+    "Messages:TransferCenterAlreadyExists": "Bu Transfer Center Daha Önce Kaydedilmiş",
+    "Messages:AgentaNotFoundForTransferCenter": "Belirtilen TransferCenter'a ait Agenta bulunamadı.",
+    "Messages:TransferCenterNotFound": "TransferCenter bulunamadı",
+    "Messages:DeletedTransferCenter": "Transfer Merkezi Başarıyla Silindi",
+    "Messages:SoftDeleteTransferCenter": "Transfer Merkezi Veri Tabanında Yumuşak Silindi",
+
+    "Messages:AuthorizationDenied": "Yetkiniz yok",
+    "Messages:UserAlREadyExist": "Bu Kullanıcı Zaten var",
+    "Messages:UserNotFound": "Kullanıcı bulunamadı",
+    "Messages:PasswordError": "Şifre hatalı",
+    "Messages:SuccessfulLogin": "Sisteme giriş başarılı",
+    "Messages:UserAlreadyExists": "Bu kullanıcı zaten mevcut",
+    "Messages:UserRegistered": "Kullanıcı başarıyla kaydedildi",
+    "Messages:AccessTokenCreated": "Access token başarıyla oluşturuldu",
+
+    "Messages:AddedStation": "Durak Başarıyla Eklendi",
+    "Messages:StationNotFount": "Belirtilen ID'ye sahip istasyon bulunamadı.",
+    "Messages:UpdatedStation": "Durak Başarıyla Güncellendi",
+    "Messages:DeletedStation": "Durak Başarıyla Silindi",
+
+    "Messages:AddLine": "Hat Başarıyla Eklendi"
+
   }
 }

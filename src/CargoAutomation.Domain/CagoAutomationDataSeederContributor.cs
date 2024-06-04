@@ -1,5 +1,6 @@
 ﻿
-using MyProject.Entities;
+using CargoAutomation.Agentas;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace CargoAutomation
     public class CagoAutomationDataSeederContributor : IDataSeedContributor, ITransientDependency
     {
         private readonly IRepository<Agenta, Guid> _agentaRepository;
-        private readonly IRepository<TransferCenter, Guid> _transferCenterRepository;
+        private readonly IRepository<CargoAutomation.TransferCenters.TransferCenter, Guid> _transferCenterRepository;
 
-        public CagoAutomationDataSeederContributor(IRepository<Agenta, Guid> agentaRepository,IRepository<TransferCenter, Guid> transferCenterRepository)
+        public CagoAutomationDataSeederContributor(IRepository<Agenta, Guid> agentaRepository,IRepository<CargoAutomation.TransferCenters.TransferCenter, Guid> transferCenterRepository)
         {
             _agentaRepository = agentaRepository;
             _transferCenterRepository = transferCenterRepository;
@@ -30,7 +31,7 @@ namespace CargoAutomation
             }
 
             var antalyaTransferCenter = await _transferCenterRepository.InsertAsync(
-                new TransferCenter
+                new CargoAutomation.TransferCenters.TransferCenter
                 {
                     
                     UnitName = "Antalya",
@@ -49,7 +50,7 @@ namespace CargoAutomation
                 });
 
             var malatyaTransferCenter = await _transferCenterRepository.InsertAsync(
-                new TransferCenter
+                new CargoAutomation.TransferCenters.TransferCenter
                 {
                   
                     UnitName = "Malatya",
@@ -68,7 +69,7 @@ namespace CargoAutomation
                 });
 
             var elazigTransferCenter = await _transferCenterRepository.InsertAsync(
-                new TransferCenter
+                new CargoAutomation.TransferCenters.TransferCenter
                 {
                     
                     UnitName = "Elazığ",

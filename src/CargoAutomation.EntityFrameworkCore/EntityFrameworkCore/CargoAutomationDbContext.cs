@@ -62,7 +62,7 @@ public class CargoAutomationDbContext :
 
     public DbSet<Unit> Units { get; set; }
     public DbSet<Agenta> Agentas { get; set; }
-    public DbSet<TransferCenter> TransferCenters { get; set; }
+    public DbSet<CargoAutomation.TransferCenters.TransferCenter> TransferCenters { get; set; }
     public DbSet<Station> Stations { get; set; }
     public DbSet<Line> Lines { get; set; }
     #endregion
@@ -122,7 +122,7 @@ public class CargoAutomationDbContext :
         });
 
         // TransferCenters
-        builder.Entity<TransferCenter>(b =>
+        builder.Entity<CargoAutomation.TransferCenters.TransferCenter>(b =>
         {
             b.ToTable(CargoAutomationConsts.DbTablePrefix + "TransferCenters", CargoAutomationConsts.DbSchema);
             b.ConfigureByConvention();

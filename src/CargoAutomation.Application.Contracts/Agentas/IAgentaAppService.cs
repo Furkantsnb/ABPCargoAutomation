@@ -6,7 +6,7 @@ using Volo.Abp.Application.Dtos;
 
 using Entities.Dtos.Agentas;
 
-namespace MyProject.Business.Abstract
+namespace CargoAutomation.Agentas
 {
     public interface IAgentaAppService : IApplicationService
     {

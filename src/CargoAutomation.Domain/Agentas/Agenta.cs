@@ -11,6 +11,6 @@ namespace CargoAutomation.Agentas
     public class Agenta : Unit
     {
         public Guid TransferCenterId { get; set; }
-        public TransferCenter TransferCenter { get; set; }
+        public CargoAutomation.TransferCenters.TransferCenter TransferCenter { get; set; }
     }
 }
