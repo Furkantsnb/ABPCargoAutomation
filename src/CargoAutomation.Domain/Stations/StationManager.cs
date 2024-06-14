@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.Dtos.Stations;
+using Polly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CargoAutomation.Stations
 {
-    public class StationManager : DomainService
+    public class StationManager : DomainService,IStationAppService
     {
         private readonly IRepository<Station, Guid> _stationRepository;
         private readonly IMapper _mapper;
@@ -33,8 +35,10 @@ namespace CargoAutomation.Stations
         public async Task CreateRangeAsync(List<CreateStationDto> createStationDtos)
         {
             var stations = _mapper.Map<List<Station>>(createStationDtos);
-            await _stationRepository.InsertManyAsync(stations, true);
+            await _stationRepository.InsertManyAsync(stations, autoSave: true);
         }
+
+
 
         public async Task<StationDto> UpdateAsync(Guid stationId, UpdateStationDto updateStationDto)
         {
@@ -61,17 +65,7 @@ namespace CargoAutomation.Stations
             await _stationRepository.DeleteAsync(station, true);
         }
 
-        public async Task SoftDeleteAsync(Guid stationId)
-        {
-            var station = await _stationRepository.GetAsync(stationId);
-            if (station == null)
-            {
-                throw new UserFriendlyException("Station not found.");
-            }
-
-            station.IsActive = true;
-            await _stationRepository.UpdateAsync(station, true);
-        }
+   
 
         public async Task<StationDto> GetByIdAsync(Guid stationId)
         {

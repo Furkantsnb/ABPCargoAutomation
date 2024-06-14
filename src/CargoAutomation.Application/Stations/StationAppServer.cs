@@ -42,10 +42,7 @@ namespace CargoAutomation.Stations
                 await _stationManager.DeleteAsync(stationId);
             }
 
-            public async Task SoftDeleteAsync(Guid stationId)
-            {
-                await _stationManager.SoftDeleteAsync(stationId);
-            }
+        
 
             public async Task<StationDto> GetByIdAsync(Guid stationId)
             {

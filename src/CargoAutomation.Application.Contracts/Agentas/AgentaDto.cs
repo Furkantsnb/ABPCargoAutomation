@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Entities.Dtos.Agentas
 {
-    public class AgentaDto : AuditedEntityDto<Guid>
+    public class AgentaDto : EntityDto<Guid>
     {
 
         public string UnitName { get; set; }
@@ -20,7 +20,7 @@ namespace Entities.Dtos.Agentas
         public string NeighbourHood { get; set; }
         public string Street { get; set; }
         public string AddressDetail { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public Guid TransferCenterId { get; set; }
     }
 }

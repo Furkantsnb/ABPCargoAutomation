@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CargoAutomation.Stations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -18,8 +20,8 @@ namespace CargoAutomation.Units
         public string NeighbourHood { get; set; }
         public string Street { get; set; }
         public string AddressDetail { get; set; }
-        public bool IsDeleted { get; set; }
-        [ConcurrencyCheck]
-        public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+        public bool IsDeleted { get; set; } = false;
+        public List<Station> Stations { get; set; }
+     
     }
 }

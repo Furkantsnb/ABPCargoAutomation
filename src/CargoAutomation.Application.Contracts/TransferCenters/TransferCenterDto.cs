@@ -21,9 +21,8 @@ namespace CargoAutomation.TransferCenter
         public string NeighbourHood { get; set; }
         public string Street { get; set; }
         public string AddressDetail { get; set; }
-        public bool IsDeleted { get; set; }
-        [ConcurrencyCheck]
-        public virtual string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
-        
+        public bool IsDeleted { get; set; } = false;
+      
+
     }
 }

@@ -16,9 +16,9 @@ namespace CargoAutomation.Application
             _lineManager = lineManager;
         }
 
-        public async Task<LineDto> CreateAsync(CreateLineDto input)
+        public async Task<LineDto> CreateAsync(CreateLineDto input,Guid guid)
         {
-            return await _lineManager.CreateAsync(input);
+            return await _lineManager.CreateAsync(input,guid);
         }
 
         public async Task DeleteAsync(Guid id)

@@ -14,8 +14,8 @@ namespace Entities.Dtos.Lines
         public string LineName { get; set; }
         public bool IsActive { get; set; } = true;
         public LineType LineType { get; set; } // Enum tipi olarak tanımlanmış LineType
-        public Guid? TransferCenterId { get; set; } //hattın ana hat olması durumunda başlangıç duragı.
-
+       // public Guid? TransferCenterId { get; set; } //hattın ana hat olması durumunda başlangıç duragı.
+       // public bool IsDeleted { get; set; } = false;
         public List<Guid> Stations { get; set; }
     }
 }

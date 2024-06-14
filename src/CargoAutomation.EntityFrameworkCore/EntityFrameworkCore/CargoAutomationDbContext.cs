@@ -65,6 +65,8 @@ public class CargoAutomationDbContext :
     public DbSet<CargoAutomation.TransferCenters.TransferCenter> TransferCenters { get; set; }
     public DbSet<Station> Stations { get; set; }
     public DbSet<Line> Lines { get; set; }
+    //public DbSet<Book> Books { get; set; }
+    //public DbSet<Kategory> kategories { get; set; }
     #endregion
 
     public CargoAutomationDbContext(DbContextOptions<CargoAutomationDbContext> options)
@@ -136,6 +138,17 @@ public class CargoAutomationDbContext :
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        //unit ile line arasında çoka çok ilişki kuruldu
+        builder.Entity<Station>().HasKey(sc => new { sc.UnitId, sc.LineId });
+
+        builder.Entity<Station>().HasOne(sc => sc.Unit)
+            .WithMany(sc => sc.Stations)
+            .HasForeignKey(sc => sc.UnitId);
+
+        builder.Entity<Station>().HasOne(sc => sc.Line)
+           .WithMany(sc => sc.Stations)
+           .HasForeignKey(sc => sc.LineId);
+
         // Stations
         builder.Entity<Station>(b =>
         {
@@ -144,12 +157,12 @@ public class CargoAutomationDbContext :
 
            
 
-            // Station'dan Line'a many-to-one ilişkisi belirle
-            b.HasOne(s => s.Line)
-                .WithMany(l => l.Stations)
-                .HasForeignKey(s => s.LineId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+            //// Station'dan Line'a many-to-one ilişkisi belirle
+            //b.HasOne(s => s.Line)
+            //    .WithMany(l => l.Stations)
+            //    .HasForeignKey(s => s.LineId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Restrict);
         });
 
         // Lines
@@ -159,12 +172,12 @@ public class CargoAutomationDbContext :
             b.ConfigureByConvention();
 
 
-            // Line'dan Station'a one-to-many ilişkisi belirle
-            b.HasMany(l => l.Stations)
-                .WithOne(s => s.Line)
-                .HasForeignKey(s => s.LineId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            //// Line'dan Station'a one-to-many ilişkisi belirle
+            //b.HasMany(l => l.Stations)
+            //    .WithOne(s => s.Line)
+            //    .HasForeignKey(s => s.LineId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 
 namespace Entities.Dtos.TransferCenter
 {
-    public class CreateTransferCenterDto 
+    public class CreateTransferCenterDto :EntityDto
     {
         public string UnitName { get; set; }
         public string ManagerName { get; set; }
@@ -21,7 +22,7 @@ namespace Entities.Dtos.TransferCenter
         public string NeighbourHood { get; set; }
         public string Street { get; set; }
         public string AddressDetail { get; set; }
-        public bool IsDeleted { get; set; }
-      
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

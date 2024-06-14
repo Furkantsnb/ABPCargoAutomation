@@ -11,7 +11,7 @@ namespace CargoAutomation.Lines
     {
         Task<PagedResultDto<LineDto>> GetListAsync(PagedAndSortedResultRequestDto input);
         Task<LineDto> GetAsync(Guid id);
-        Task<LineDto> CreateAsync(CreateLineDto input);
+        Task<LineDto> CreateAsync(CreateLineDto input,Guid guid);
         Task<LineDto> UpdateAsync(Guid id, UpdateLineDto input);
         Task DeleteAsync(Guid id);
         Task SoftDeleteAsync(Guid id);
