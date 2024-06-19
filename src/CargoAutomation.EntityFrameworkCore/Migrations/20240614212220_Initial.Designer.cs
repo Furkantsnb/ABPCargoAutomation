@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace CargoAutomation.Migrations
 {
     [DbContext(typeof(CargoAutomationDbContext))]
-    [Migration("20240513111003_Initial")]
+    [Migration("20240614212220_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,6 +26,203 @@ namespace CargoAutomation.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CargoAutomation.Lines.Line", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("LineName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("LineType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lines");
+                });
+
+            modelBuilder.Entity("CargoAutomation.Stations.Station", b =>
+                {
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UnitId", "LineId");
+
+                    b.HasIndex("LineId");
+
+                    b.ToTable("Stations");
+                });
+
+            modelBuilder.Entity("CargoAutomation.Units.Unit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("Gsm")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("ManagerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ManagerSurname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NeighbourHood")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppUnits", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
@@ -1768,6 +1965,44 @@ namespace CargoAutomation.Migrations
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
                 });
 
+            modelBuilder.Entity("CargoAutomation.Agentas.Agenta", b =>
+                {
+                    b.HasBaseType("CargoAutomation.Units.Unit");
+
+                    b.Property<Guid>("TransferCenterId")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("TransferCenterId");
+
+                    b.ToTable("Agentas");
+                });
+
+            modelBuilder.Entity("CargoAutomation.TransferCenters.TransferCenter", b =>
+                {
+                    b.HasBaseType("CargoAutomation.Units.Unit");
+
+                    b.ToTable("AppTransferCenters", (string)null);
+                });
+
+            modelBuilder.Entity("CargoAutomation.Stations.Station", b =>
+                {
+                    b.HasOne("CargoAutomation.Lines.Line", "Line")
+                        .WithMany("Stations")
+                        .HasForeignKey("LineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CargoAutomation.Units.Unit", "Unit")
+                        .WithMany("Stations")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Line");
+
+                    b.Navigation("Unit");
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -1910,6 +2145,36 @@ namespace CargoAutomation.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CargoAutomation.Agentas.Agenta", b =>
+                {
+                    b.HasOne("CargoAutomation.TransferCenters.TransferCenter", "TransferCenter")
+                        .WithMany("Agentas")
+                        .HasForeignKey("TransferCenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransferCenter");
+                });
+
+            modelBuilder.Entity("CargoAutomation.TransferCenters.TransferCenter", b =>
+                {
+                    b.HasOne("CargoAutomation.Units.Unit", null)
+                        .WithOne()
+                        .HasForeignKey("CargoAutomation.TransferCenters.TransferCenter", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CargoAutomation.Lines.Line", b =>
+                {
+                    b.Navigation("Stations");
+                });
+
+            modelBuilder.Entity("CargoAutomation.Units.Unit", b =>
+                {
+                    b.Navigation("Stations");
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Navigation("Actions");
@@ -1948,6 +2213,11 @@ namespace CargoAutomation.Migrations
             modelBuilder.Entity("Volo.Abp.TenantManagement.Tenant", b =>
                 {
                     b.Navigation("ConnectionStrings");
+                });
+
+            modelBuilder.Entity("CargoAutomation.TransferCenters.TransferCenter", b =>
+                {
+                    b.Navigation("Agentas");
                 });
 #pragma warning restore 612, 618
         }

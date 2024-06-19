@@ -4,46 +4,43 @@ using CargoAutomation.Lines;
 using Entities.Dtos.Lines;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace CargoAutomation.Application
 {
-    public class LineService : ApplicationService, ILineAppService
+    public class LineService : CrudAppService<Line,LineDto,Guid,PagedAndSortedResultRequestDto,CreateLineDto,UpdateLineDto>, ILineAppService
     {
         private readonly LineManager _lineManager;
 
-        public LineService(LineManager lineManager)
+        public LineService(IRepository<Line, Guid> repository, LineManager lineManager) : base(repository)
         {
             _lineManager = lineManager;
         }
 
-        public async Task<LineDto> CreateAsync(CreateLineDto input,Guid guid)
+        public override async Task<LineDto> CreateAsync(CreateLineDto input)
         {
-            return await _lineManager.CreateAsync(input,guid);
+            return await _lineManager.CreateAsync(input);
+        }
+        public override  async Task<LineDto> UpdateAsync(Guid id, UpdateLineDto input)
+        {
+            return await _lineManager.UpdateAsync(id,input);
+        }
+        public override Task DeleteAsync(Guid id)
+        {
+            return base.DeleteAsync(id);
+        }
+        public override Task<LineDto> GetAsync(Guid id)
+        {
+            return base.GetAsync(id);
+        }
+        public override Task<PagedResultDto<LineDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        {
+            return base.GetListAsync(input);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task HartDeleteAsync(Guid id)
         {
-            await _lineManager.DeleteAsync(id);
-        }
-
-        public async Task<LineDto> GetAsync(Guid id)
-        {
-            return await _lineManager.GetAsync(id);
-        }
-
-        public async Task<PagedResultDto<LineDto>> GetListAsync(PagedAndSortedResultRequestDto input)
-        {
-            return await _lineManager.GetListAsync(input);
-        }
-
-        public async Task<LineDto> UpdateAsync(Guid id, UpdateLineDto input)
-        {
-            return await _lineManager.UpdateAsync(id, input);
-        }
-
-        public async Task SoftDeleteAsync(Guid id)
-        {
-            await _lineManager.SoftDeleteAsync(id);
+            await Repository.HardDeleteAsync(c=>c.Id==id);
         }
     }
 }

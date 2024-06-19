@@ -65,8 +65,7 @@ public class CargoAutomationDbContext :
     public DbSet<CargoAutomation.TransferCenters.TransferCenter> TransferCenters { get; set; }
     public DbSet<Station> Stations { get; set; }
     public DbSet<Line> Lines { get; set; }
-    //public DbSet<Book> Books { get; set; }
-    //public DbSet<Kategory> kategories { get; set; }
+
     #endregion
 
     public CargoAutomationDbContext(DbContextOptions<CargoAutomationDbContext> options)
@@ -114,14 +113,14 @@ public class CargoAutomationDbContext :
      
         });
 
-        // Agentas
-        builder.Entity<Agenta>(b =>
-        {
-            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Agentas", CargoAutomationConsts.DbSchema);
-            b.ConfigureByConvention();
+        //// Agentas
+        //builder.Entity<Agenta>(b =>
+        //{
+        //    b.ToTable(CargoAutomationConsts.DbTablePrefix + "Agentas", CargoAutomationConsts.DbSchema);
+        //    b.ConfigureByConvention();
 
           
-        });
+        //});
 
         // TransferCenters
         builder.Entity<CargoAutomation.TransferCenters.TransferCenter>(b =>
@@ -133,9 +132,9 @@ public class CargoAutomationDbContext :
             // TransferCenter'dan Agenta'ya one-to-many ilişkisi belirle
             b.HasMany(tc => tc.Agentas)
                 .WithOne(a => a.TransferCenter)
-                .HasForeignKey(a => a.TransferCenterId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(a => a.TransferCenterId);
+                //.IsRequired()
+                //.OnDelete(DeleteBehavior.Cascade);
         });
 
         //unit ile line arasında çoka çok ilişki kuruldu
@@ -149,35 +148,35 @@ public class CargoAutomationDbContext :
            .WithMany(sc => sc.Stations)
            .HasForeignKey(sc => sc.LineId);
 
-        // Stations
-        builder.Entity<Station>(b =>
-        {
-            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Stations", CargoAutomationConsts.DbSchema);
-            b.ConfigureByConvention();
+        //// Stations
+        //builder.Entity<Station>(b =>
+        //{
+        //    b.ToTable(CargoAutomationConsts.DbTablePrefix + "Stations", CargoAutomationConsts.DbSchema);
+        //    b.ConfigureByConvention();
 
            
 
-            //// Station'dan Line'a many-to-one ilişkisi belirle
-            //b.HasOne(s => s.Line)
-            //    .WithMany(l => l.Stations)
-            //    .HasForeignKey(s => s.LineId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Restrict);
-        });
+        //    //// Station'dan Line'a many-to-one ilişkisi belirle
+        //    //b.HasOne(s => s.Line)
+        //    //    .WithMany(l => l.Stations)
+        //    //    .HasForeignKey(s => s.LineId)
+        //    //    .IsRequired()
+        //    //    .OnDelete(DeleteBehavior.Restrict);
+        //});
 
-        // Lines
-        builder.Entity<Line>(b =>
-        {
-            b.ToTable(CargoAutomationConsts.DbTablePrefix + "Lines", CargoAutomationConsts.DbSchema);
-            b.ConfigureByConvention();
+        //// Lines
+        //builder.Entity<Line>(b =>
+        //{
+        //    b.ToTable(CargoAutomationConsts.DbTablePrefix + "Lines", CargoAutomationConsts.DbSchema);
+        //    b.ConfigureByConvention();
 
 
-            //// Line'dan Station'a one-to-many ilişkisi belirle
-            //b.HasMany(l => l.Stations)
-            //    .WithOne(s => s.Line)
-            //    .HasForeignKey(s => s.LineId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
-        });
+        //    //// Line'dan Station'a one-to-many ilişkisi belirle
+        //    //b.HasMany(l => l.Stations)
+        //    //    .WithOne(s => s.Line)
+        //    //    .HasForeignKey(s => s.LineId)
+        //    //    .IsRequired()
+        //    //    .OnDelete(DeleteBehavior.Cascade);
+        //});
     }
 }

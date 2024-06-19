@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal.Mappers;
 using CargoAutomation.Localization;
+using CargoAutomation.Stations;
 using Entities.Dtos.Agentas;
 using Microsoft.Extensions.Localization;
 using System;
@@ -21,13 +22,14 @@ namespace CargoAutomation.Agentas
     public class AgentaManager : DomainService
     {
         private readonly IRepository<Agenta, Guid> _agentaRepository;
+        private readonly IRepository<Station, Guid> _stationRepository;
         private readonly IMapper _mapper;
         private readonly IRepository<CargoAutomation.TransferCenters.TransferCenter, Guid> _transferCenterRepository;
         private readonly IStringLocalizer<CargoAutomationResource> _localizer;
 
         public AgentaManager(
             IRepository<Agenta, Guid> agentaRepository,
-            IMapper mapper,
+            IMapper mapper, IRepository<Station, Guid> stationRepository,
             IRepository<TransferCenters.TransferCenter, Guid> transferCenterRepository,
             IStringLocalizer<CargoAutomationResource> localizer)
         {
@@ -35,17 +37,13 @@ namespace CargoAutomation.Agentas
             _mapper = mapper;
             _transferCenterRepository = transferCenterRepository;
             _localizer = localizer;
+            _stationRepository = stationRepository;
         }
 
         public async Task<AgentaDto> CreateAsync(CreateAgentaDto input)
         {
             var agenta = _mapper.Map<Agenta>(input);
-            var existingAgenta = await _agentaRepository.FirstOrDefaultAsync(a => a.UnitName == agenta.UnitName);
-
-            if (existingAgenta != null)
-            {
-                throw new UserFriendlyException(_localizer["AgentaAlreadyExists"]);
-            }
+             await _agentaRepository.FirstOrDefaultAsync(a => a.UnitName == agenta.UnitName);
 
             var transferCenter = await _transferCenterRepository.FirstOrDefaultAsync(a => a.Id == agenta.TransferCenterId);
             if (transferCenter == null)
@@ -69,33 +67,19 @@ namespace CargoAutomation.Agentas
 
         public async Task DeleteAsync(Guid id)
         {
-            var agenta = await _agentaRepository.GetAsync(id);
-            if (agenta == null)
+            await _agentaRepository.GetAsync(id);
+            // Eğer TransferCenter bağlı bir istasyon varsa istasyonu sil
+            var relatedStation = await _stationRepository.GetAsync(s => s.UnitId == id);
+            if (relatedStation != null)
             {
-                throw new UserFriendlyException(_localizer["AgentaNotFound"], $"Agenta with ID {id} does not exist.");
+                await _stationRepository.DeleteAsync(relatedStation);
             }
-
-            if (agenta.IsDeleted)
-            {
-                throw new UserFriendlyException(_localizer["AgentaAlreadySoftDeleted"], $"Agenta with ID {id} is already soft deleted.");
-            }
-
             await _agentaRepository.DeleteAsync(id);
         }
 
         public async Task SoftDeleteAsync(Guid id)
         {
             var agenta = await _agentaRepository.GetAsync(id);
-            if (agenta == null)
-            {
-                throw new UserFriendlyException(_localizer["AgentaNotFound"], $"Agenta with ID {id} does not exist.");
-            }
-
-            if (agenta.IsDeleted)
-            {
-                throw new UserFriendlyException(_localizer["AgentaAlreadySoftDeleted"], $"Agenta with ID {id} is already soft deleted.");
-            }
-
             agenta.IsDeleted = true;
             await _agentaRepository.UpdateAsync(agenta);
         }
@@ -103,11 +87,7 @@ namespace CargoAutomation.Agentas
         public async Task<AgentaDto> GetAsync(Guid id)
         {
             var agenta = await _agentaRepository.GetAsync(id);
-            if (agenta == null)
-            {
-                throw new UserFriendlyException(_localizer["AgentaNotFound"], $"Agenta with ID {id} does not exist.");
-            }
-
+          
             return _mapper.Map<Agenta, AgentaDto>(agenta);
         }
 

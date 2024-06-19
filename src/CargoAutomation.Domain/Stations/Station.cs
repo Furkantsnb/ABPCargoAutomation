@@ -10,8 +10,6 @@ namespace CargoAutomation.Stations
     public class Station : AuditedAggregateRoot<Guid>
     {
   
-        public string StationName { get; set; }
- 
         public int OrderNumber { get; set; }
         public Guid UnitId { get; set; }
         public Unit Unit { get; set; }

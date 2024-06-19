@@ -18,7 +18,7 @@ using Volo.Abp.Uow;
 
 namespace CargoAutomation.Application
 {
-    public class LineManager : DomainService,ILineAppService
+    public class LineManager : DomainService
     {
         private readonly IRepository<Line, Guid> _lineRepository;
 
@@ -49,11 +49,7 @@ namespace CargoAutomation.Application
 
         public async Task<LineDto> CreateAsync(CreateLineDto createLineDto )
         {
-      //      await _transferCenterRepository.GetAsync(p => p.Id == guid);
-            //if (result == null)
-            //{
-            //    throw new UserFriendlyException("TransferCenter bulunamadı");
-            //}
+     
 
             var existingLine = await _lineRepository.GetAsync(l => l.LineName == createLineDto.LineName && l.LineType == createLineDto.LineType);
             if (existingLine != null)
@@ -62,23 +58,9 @@ namespace CargoAutomation.Application
                 throw new UserFriendlyException("Bu hat zaten eklenmiş.");
             }
 
-            //foreach (var stationId in createLineDto.Stations)
-            //{
-            //     await _unitRepository.GetAsync(u => u.Id == stationId);
-            //    //if (existingUnit == null || guid == stationId)
-            //    //{
-            //    //    throw new UserFriendlyException($"Girilen istasyonlar arasında fazla ya da geçersiz bir Station bulundu  : {stationId}");
-                   
-            //    //}
-            //}
-
             if (createLineDto.LineType == LineType.AraHat)
             {
-                //if (guid == null && createLineDto.Stations.FirstOrDefault() != guid)
-                //{
-                //    throw new UserFriendlyException("Ara hat için ilk durak transfer merkezi olmalıdır.");
-                //}
-
+                
                 foreach (var stationId in createLineDto.Stations.Skip(1))
                 {
                     var unit = await _unitRepository.GetAsync(u => u.Id == stationId);
@@ -104,10 +86,6 @@ namespace CargoAutomation.Application
             Line line = _mapper.Map<Line>(createLineDto);
             line.Stations =  GenerateStations(createLineDto.Stations);
             await _lineRepository.InsertAsync(line);
-           // var stations = GenerateStations(createLineDto, line);
-
-
-            //   await _stationAppService.CreateRangeAsync(stations);
 
             return  _mapper.Map<Line, LineDto>(line);
         }
@@ -173,49 +151,21 @@ namespace CargoAutomation.Application
         {
             var lineToUpdate = await _lineRepository.GetAsync(l => l.Id == id);
 
-            if (lineToUpdate == null)
-            {
-                throw new UserFriendlyException("Hat bulunamadı");
-            }
 
-            // TransferCenterId kontrolü
-            var transferCenter = await _transferCenterRepository.GetAsync(u => u.Id == input.TransferCenterId);
-            if (transferCenter == null)
-            {
-                throw new UserFriendlyException("Geçersiz transfer merkezi IDsi");
-            }
-
-            // Girilen istasyonlar veri tabanında mevcut mu kontrol et
-            foreach (var stationId in input.Stations)
-            {
-                var existingUnit = await _unitRepository.GetAsync(u => u.Id == stationId);
-                if (existingUnit == null || input.TransferCenterId == stationId)
-                {
-                    throw new UserFriendlyException($"Girilen istasyonlar arasında fazla ya da geçersiz bir Station bulundu  : {stationId}");
-                }
-            }
-
-            // Aynı hatın veri tabanında daha önce eklenip eklenmediğini kontrol et
-            var existingLine = await _lineRepository.GetAsync(l => l.LineName == input.LineName && l.LineType == input.LineType && l.Id != id);
+            var existingLine = await _lineRepository.GetAsync(l => l.LineName == input.LineName && l.LineType == input.LineType);
             if (existingLine != null)
             {
+
                 throw new UserFriendlyException("Bu hat zaten eklenmiş.");
             }
 
-            // AraHat için kontrol
             if (input.LineType == LineType.AraHat)
             {
-                // İlk durak transferCenter olmalı
-                if (input.TransferCenterId == null && input.Stations.FirstOrDefault() != input.TransferCenterId)
-                {
-                    throw new UserFriendlyException("Ara hat için ilk durak transfer merkezi olmalıdır.");
-                }
 
-                // Diğer duraklar sadece agentalardan oluşmalı
                 foreach (var stationId in input.Stations.Skip(1))
                 {
-                    var unit = await _agentaRepository.GetAsync(u => u.Id == stationId);
-                    if (unit == null || unit is not Agenta)
+                    var unit = await _unitRepository.GetAsync(u => u.Id == stationId);
+                    if (unit is not Agenta)
                     {
                         throw new UserFriendlyException("Ara hat için diğer duraklar sadece acentalardan oluşmalıdır.");
                     }
@@ -223,91 +173,37 @@ namespace CargoAutomation.Application
             }
             else if (input.LineType == LineType.AnaHat)
             {
-                // Tüm duraklar sadece TransferCenter olmalı
                 foreach (var stationId in input.Stations)
                 {
-                    var unit = await _transferCenterRepository.GetAsync(u => u.Id == stationId);
-                    if (unit == null || unit is not CargoAutomation.TransferCenters.TransferCenter)
+                    var unit = await _unitRepository.GetAsync(u => u.Id == stationId);
+                    if (unit is not CargoAutomation.TransferCenters.TransferCenter)
                     {
                         throw new UserFriendlyException("Ana hat için tüm duraklar bir transfer merkezi olmalıdır.");
                     }
                 }
             }
-
-            //Line line = _mapper.Map<Line>(createLineDto);
-
-            //await _lineRepository.InsertAsync(line);
-
-            //var stations = GenerateStations(createLineDto, line);
-
-            //await _stationAppService.CreateRangeAsync(stations);
-
-            //return _mapper.Map<Line, LineDto>(line);
-            // Update line properties
-            
-            // Update other properties as needed
-            Line line = _mapper.Map<Line>(input);
-
-            // Update line in database
-            await _lineRepository.UpdateAsync(line);
-
-            // Delete existing stations for this line
             var existingStations = await _stationRepository.GetListAsync(s => s.LineId == id);
             foreach (var station in existingStations)
             {
                 await _stationRepository.DeleteAsync(station);
             }
 
-            // Generate and add new stations
-            var newStations = GenerateStationss(input, line);
-          
-           // await _stationAppService.CreateRangeAsync(newStations);
+            // Update other properties as needed
+            Line line = _mapper.Map<Line>(input);
+
+            line.Stations = GenerateStations(input.Stations);
+            // Update line in database
+            await _lineRepository.UpdateAsync(line);
 
             return _mapper.Map<Line, LineDto>(line);
         }
-        public async Task SoftDeleteAsync(Guid id)
-        {
-            var line = await _lineRepository.GetAsync(id);
-            if (line == null)
-            {
-                throw new UserFriendlyException("Line not found.");
-            }
-
-            line.IsDeleted = true;
-            await _lineRepository.UpdateAsync(line, true);
-        }
+     
 
 
 
-        private List<Station> GenerateStationss(UpdateLineDto updateLineDto, Line line)
-        {
-            var stations = new List<Station>();
-
-            if (updateLineDto.TransferCenterId != Guid.Empty)
-            {
-                var transferStation = CreateTransferStations(updateLineDto, line);
-                stations.Add(transferStation);
-            }
-
-            for (int i = 0; i < updateLineDto.Stations.Count; i++)
-            {
-
-                var stationUnitId = updateLineDto.Stations[i];
-                var station = CreateStation(line, stationUnitId, i + 1);
-                stations.Add(station);
-            }
-
-            return stations;
-        }
         private List<Station> GenerateStations(List<Guid> unitIds)
         {
             var stations = new List<Station>();
-
-            //if (createLineDto.TransferCenterId != Guid.Empty)
-            //{
-            //    var transferStation = CreateTransferStation(createLineDto, line);
-            //    stations.Add(transferStation);
-            //}
 
             foreach (var item in unitIds)
             {
@@ -318,47 +214,9 @@ namespace CargoAutomation.Application
                 stations.Add(station);
                 
             }
-            //for (int i = 0; i < createLineDto.Stations.Count; i++)
-            //{
-            //    var stationUnitId = createLineDto.Stations[i];
-            //    var station = CreateStation(line, stationUnitId, i + 1);
-            //    stations.Add(station);
-            //}
 
             return stations;
         }
 
-        private Station CreateTransferStation(CreateLineDto createLineDto, Line line)
-        {
-            return new Station
-            {
-                StationName = $"{line.LineName}",
-                OrderNumber = 1,
-                LineId = line.Id,
-                UnitId = createLineDto.TransferCenterId.Value
-            };
-        }
-        private Station CreateTransferStations(UpdateLineDto updateLineDto, Line line)
-        {
-            return new Station
-            {
-                StationName = $"{line.LineName}",
-                OrderNumber = 1,
-                LineId = line.Id,
-                UnitId = updateLineDto.TransferCenterId.Value
-            };
-        }
-
-        private Station CreateStation(Line line, Guid stationUnitId, int orderNumber)
-        {
-            return new Station
-            {
-                StationName = $"{line.LineName} Durak{orderNumber}",
-                OrderNumber = orderNumber + 1,
-                LineId = line.Id,
-      
-                UnitId = stationUnitId
-            };
-        }
     }
 }

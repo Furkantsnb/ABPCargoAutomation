@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CargoAutomation.Agentas;
 using CargoAutomation.Localization;
+using CargoAutomation.Stations;
 using CargoAutomation.TransferCenter;
 using Entities.Dtos.Agentas;
 using Entities.Dtos.TransferCenter;
@@ -20,18 +21,20 @@ namespace CargoAutomation.TransferCenters
     {
         private readonly IRepository<TransferCenter, Guid> _transferCenterRepository;
         private readonly IRepository<Agenta,Guid> _agentaRepository;
+        private readonly IRepository<Station, Guid> _stationRepository;
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<CargoAutomationResource> _localizer;
 
         public TransferCenterManager(
             IRepository<TransferCenter, Guid> transferCenterRepository, IRepository<Agenta, Guid> agentaRepository,
-            IMapper mapper,
+            IMapper mapper, IRepository<Station, Guid> stationRepository,
             IStringLocalizer<CargoAutomationResource> localizer)
         {
             _transferCenterRepository = transferCenterRepository;
             _mapper = mapper;
             _localizer = localizer;
             _agentaRepository= agentaRepository;
+            _stationRepository = stationRepository;
         }
 
         public async Task<TransferCenterDto> CreateAsync(CreateTransferCenterDto input)
@@ -44,7 +47,7 @@ namespace CargoAutomation.TransferCenters
 
             if (existingTransferCenter != null)
             {
-                throw new UserFriendlyException(_localizer["TransferCenterAlreadyExists"]);
+                throw new UserFriendlyException("TransferCenterAlreadyExists");
             }
 
             await _transferCenterRepository.InsertAsync(transferCenter, true);
@@ -55,10 +58,7 @@ namespace CargoAutomation.TransferCenters
         public async Task<TransferCenterDto> UpdateAsync(Guid id,UpdateTransferCenterDto input)
         {
             var transferCenter = await _transferCenterRepository.GetAsync(id);
-            if (transferCenter == null)
-            {
-                throw new UserFriendlyException(_localizer["TransferCenterNotFound"]);
-            }
+           
 
             _mapper.Map(input, transferCenter);
             await _transferCenterRepository.UpdateAsync(transferCenter, true);
@@ -68,23 +68,21 @@ namespace CargoAutomation.TransferCenters
 
         public async Task DeleteAsync(Guid id)
         {
-            var transferCenter = await _transferCenterRepository.GetAsync(id);
-            if (transferCenter == null)
-            {
-                throw new UserFriendlyException(_localizer["TransferCenterNotFound"]);
-            }
+             await _transferCenterRepository.GetAsync(id);
 
-            await _transferCenterRepository.DeleteAsync(transferCenter);
+            // Eğer TransferCenter bağlı bir istasyon varsa istasyonu sil
+            var relatedStation = await _stationRepository.GetAsync(s => s.UnitId == id);
+            if (relatedStation != null)
+            {
+                await _stationRepository.DeleteAsync(relatedStation);
+            }
+            await _transferCenterRepository.DeleteAsync(id);
         }
 
         public async Task SoftDeleteAsync(Guid id)
         {
             var transferCenter = await _transferCenterRepository.GetAsync(id);
-            if (transferCenter == null)
-            {
-                throw new UserFriendlyException(_localizer["TransferCenterNotFound"]);
-            }
-
+           
             transferCenter.IsDeleted = true;
             await _transferCenterRepository.UpdateAsync(transferCenter);
         }

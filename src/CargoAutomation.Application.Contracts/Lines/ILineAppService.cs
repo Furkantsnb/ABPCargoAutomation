@@ -7,13 +7,8 @@ using Volo.Abp.Application.Services;
 
 namespace CargoAutomation.Lines
 {
-    public interface ILineAppService : IApplicationService
+    public interface ILineAppService : ICrudAppService<LineDto,Guid,PagedAndSortedResultRequestDto,CreateLineDto,UpdateLineDto>
     {
-        Task<PagedResultDto<LineDto>> GetListAsync(PagedAndSortedResultRequestDto input);
-        Task<LineDto> GetAsync(Guid id);
-        Task<LineDto> CreateAsync(CreateLineDto input,Guid guid);
-        Task<LineDto> UpdateAsync(Guid id, UpdateLineDto input);
-        Task DeleteAsync(Guid id);
-        Task SoftDeleteAsync(Guid id);
+        Task HartDeleteAsync(Guid id);
     }
 }

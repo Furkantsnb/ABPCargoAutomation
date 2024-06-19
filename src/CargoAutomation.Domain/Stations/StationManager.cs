@@ -43,11 +43,7 @@ namespace CargoAutomation.Stations
         public async Task<StationDto> UpdateAsync(Guid stationId, UpdateStationDto updateStationDto)
         {
             var station = await _stationRepository.GetAsync(stationId);
-            if (station == null)
-            {
-                throw new UserFriendlyException("Station not found.");
-            }
-
+ 
             _mapper.Map(updateStationDto, station);
             await _stationRepository.UpdateAsync(station, true);
 
@@ -57,10 +53,6 @@ namespace CargoAutomation.Stations
         public async Task DeleteAsync(Guid stationId)
         {
             var station = await _stationRepository.GetAsync(stationId);
-            if (station == null)
-            {
-                throw new UserFriendlyException("Station not found.");
-            }
 
             await _stationRepository.DeleteAsync(station, true);
         }
@@ -70,10 +62,6 @@ namespace CargoAutomation.Stations
         public async Task<StationDto> GetByIdAsync(Guid stationId)
         {
             var station = await _stationRepository.GetAsync(stationId);
-            if (station == null)
-            {
-                throw new UserFriendlyException("Station not found.");
-            }
 
             return _mapper.Map<StationDto>(station);
         }

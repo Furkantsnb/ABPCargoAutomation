@@ -10,6 +10,6 @@ namespace CargoAutomation.TransferCenters;
 
     public class TransferCenter:Unit
     {
-        public IList<Agenta> Agentas { get; set; }
+        public List<Agenta> Agentas { get; set; }
     }
 

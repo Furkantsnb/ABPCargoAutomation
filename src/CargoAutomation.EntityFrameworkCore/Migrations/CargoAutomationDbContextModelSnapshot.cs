@@ -52,6 +52,12 @@ namespace CargoAutomation.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("LastModificationTime");
@@ -67,17 +73,17 @@ namespace CargoAutomation.Migrations
                     b.Property<int>("LineType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("TransferCenterId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.ToTable("AppLines", (string)null);
+                    b.ToTable("Lines");
                 });
 
             modelBuilder.Entity("CargoAutomation.Stations.Station", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LineId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -100,8 +106,8 @@ namespace CargoAutomation.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp without time zone")
@@ -111,26 +117,14 @@ namespace CargoAutomation.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<Guid>("LineId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("OrderNumber")
                         .HasColumnType("integer");
 
-                    b.Property<string>("StationName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UnitId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
+                    b.HasKey("UnitId", "LineId");
 
                     b.HasIndex("LineId");
 
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("AppStations", (string)null);
+                    b.ToTable("Stations");
                 });
 
             modelBuilder.Entity("CargoAutomation.Units.Unit", b =>
@@ -183,7 +177,10 @@ namespace CargoAutomation.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
 
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp without time zone")
@@ -1974,7 +1971,7 @@ namespace CargoAutomation.Migrations
 
                     b.HasIndex("TransferCenterId");
 
-                    b.ToTable("AppAgentas", (string)null);
+                    b.ToTable("Agentas");
                 });
 
             modelBuilder.Entity("CargoAutomation.TransferCenters.TransferCenter", b =>
@@ -1993,8 +1990,10 @@ namespace CargoAutomation.Migrations
                         .IsRequired();
 
                     b.HasOne("CargoAutomation.Units.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId");
+                        .WithMany("Stations")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Line");
 
@@ -2145,12 +2144,6 @@ namespace CargoAutomation.Migrations
 
             modelBuilder.Entity("CargoAutomation.Agentas.Agenta", b =>
                 {
-                    b.HasOne("CargoAutomation.Units.Unit", null)
-                        .WithOne()
-                        .HasForeignKey("CargoAutomation.Agentas.Agenta", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CargoAutomation.TransferCenters.TransferCenter", "TransferCenter")
                         .WithMany("Agentas")
                         .HasForeignKey("TransferCenterId")
@@ -2170,6 +2163,11 @@ namespace CargoAutomation.Migrations
                 });
 
             modelBuilder.Entity("CargoAutomation.Lines.Line", b =>
+                {
+                    b.Navigation("Stations");
+                });
+
+            modelBuilder.Entity("CargoAutomation.Units.Unit", b =>
                 {
                     b.Navigation("Stations");
                 });

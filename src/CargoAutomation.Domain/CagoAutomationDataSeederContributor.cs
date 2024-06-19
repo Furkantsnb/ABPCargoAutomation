@@ -98,6 +98,7 @@ namespace CargoAutomation
                     new Agenta
                     {
                         CreatorId = _guidGenerator.Create(),
+                        TransferCenterId=elazigTransferCenter.Id,
                         UnitName = "Antalya",
                         ManagerName = "Furkan",
                         ManagerSurname = "Taşan",
@@ -119,6 +120,7 @@ namespace CargoAutomation
                     new Agenta
                     {
                         CreatorId = _guidGenerator.Create(),
+                        TransferCenterId = malatyaTransferCenter.Id,
                         UnitName = "Malatya",
                         ManagerName = "Furkan",
                         ManagerSurname = "Taşan",
@@ -140,6 +142,7 @@ namespace CargoAutomation
                     new Agenta
                     {
                         CreatorId = _guidGenerator.Create(),
+                        TransferCenterId = elazigTransferCenter.Id,
                         UnitName = "Elazığ",
                         ManagerName = "Arif",
                         ManagerSurname = "Arif",

@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace CargoAutomation.Units
 {
-    public class Unit : AuditedAggregateRoot<Guid>
+    public class Unit : AuditedAggregateRoot<Guid>,ISoftDelete
     {
         public string UnitName { get; set; }
         public string ManagerName { get; set; }
@@ -20,7 +21,7 @@ namespace CargoAutomation.Units
         public string NeighbourHood { get; set; }
         public string Street { get; set; }
         public string AddressDetail { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } 
         public List<Station> Stations { get; set; }
      
     }
